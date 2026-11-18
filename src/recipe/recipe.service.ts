@@ -1,3 +1,4 @@
+import { RecipeNotFoundError, addRecipeError, deleteRecipeError } from "./recipe.errors";
 
 
 interface recipe {
@@ -55,8 +56,12 @@ export async function getAllRecipes(): Promise<recipe[]> {
     return recipes;
 }
 
-export async function getRecipeById(id: number): Promise<recipe | null> {
-  return recipes.find((r) => r.id === id) ?? null;
+export async function getRecipeById(id: number): Promise<recipe> {
+    const recipe = recipes.find((r) => r.id === id);
+    if (!recipe) {
+        throw new RecipeNotFoundError(id);
+    }
+    return recipe;
 }
 
 export async function addRecipe(recipe: recipe): Promise<recipe> {
@@ -95,12 +100,12 @@ export async function addRecipe(recipe: recipe): Promise<recipe> {
     }
 
     if (errors.length > 0) {
-        throw new Error(
+        throw new addRecipeError(
         "invalid recipe format. expected: " +
         "{ title: string, minute: number, portion: number, ingredients: string[], instructions: string, review: number }. " +
         "errors: " +
         errors.join(" | ")
-        );
+        )
     }
 
     const newRecipe = { ...recipe, id: recipes.length + 1 }; 
@@ -115,7 +120,7 @@ export async function updateRecipe(id: number, updated: recipe): Promise<recipe>
     */
     const index = recipes.findIndex((r) => r.id === id);
     if (index === -1) {                         
-        throw new Error("Recipe not found");
+        throw new RecipeNotFoundError(id); // throw a RecipeNotFoundError if the recipe is not found
     }
     recipes[index] = { ...updated, id };
     return recipes[index];
@@ -126,7 +131,7 @@ export async function deleteRecipe(id: number): Promise<recipe[]> {
 
     const index = recipes.findIndex((r) => r.id === id);
     if (index === -1) {
-        throw new Error("Recipe not found");
+        throw new deleteRecipeError(id); // throw a RecipeNotFoundError if the recipe is not found
     }
     /*
     we can also return the result of copmaring the length of the array before and after the deletion, to check if the deletion was successful or not.
