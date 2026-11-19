@@ -8,7 +8,7 @@ import swaggerUi from "swagger-ui-express"
 const swaggerSpec = swaggerJSDoc({
     definition: {
         openapi: "3.0.0",
-        info: { title: "Bücher-und-Filme-Api", version: "1.0.0" }
+        info: { title: "Recipe-Api", version: "1.0.0" }
     },
     apis: [`${import.meta.dirname}/**/*.router.ts`]
 })
