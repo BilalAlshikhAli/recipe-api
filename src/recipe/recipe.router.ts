@@ -5,6 +5,19 @@ import { handleRecipeErrors } from "./recipe.errors.ts";
 
 const router = Router();
 
+/**
+ * @openapi
+ * /recipes:
+ *   get:
+ *     summary: Alle Rezepte holen als Array
+ *     parameters:
+ *       
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste aller Rezepte
+ */
 router.get("/", getRecipesHandler);
 
 /**
