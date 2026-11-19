@@ -2,10 +2,28 @@ import express from "express";
 import recipeRoutes from "./recipe/recipe.router.ts";
 import { logger } from "./middleware/logger.ts";
 import { errorHandler } from "./recipe/recipe.errors.ts";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express"
 
-
+const swaggerSpec = swaggerJSDoc({
+    definition: {
+        openapi: "3.0.0",
+        info: { title: "Bücher-und-Filme-Api", version: "1.0.0" }
+    },
+    apis: [`${import.meta.dirname}/**/*.router.ts`]
+})
 
 const app = express();
+
+const CDN = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14";
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    customCssUrl: `${CDN}/swagger-ui.min.css`,
+    customJs: [
+        `${CDN}/swagger-ui-bundle.min.js`,
+        `${CDN}/swagger-ui-standalone-preset.min.js`,
+    ],
+}));
+
 
 app.get("/status", (req, res) => {
     res.status(200).json({ message: "Server is running." })
