@@ -4,14 +4,22 @@ import { logger } from "./middleware/logger.ts";
 import { errorHandler } from "./recipe/recipe.errors.ts";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express"
+import path from "node:path";
+
+const routerDocs = path
+  .resolve(process.cwd(), "src/**/*.router.ts")
+  .replace(/\\/g, "/");
 
 const swaggerSpec = swaggerJSDoc({
-    definition: {
-        openapi: "3.0.0",
-        info: { title: "Recipe-Api", version: "1.0.0" }
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Rezepte-API",
+      version: "1.0.0",
     },
-    apis: ["./src/**/*.router.ts"]
-})
+  },
+  apis: [routerDocs],
+});
 
 const app = express();
 
