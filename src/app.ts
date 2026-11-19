@@ -10,7 +10,7 @@ const swaggerSpec = swaggerJSDoc({
         openapi: "3.0.0",
         info: { title: "Recipe-Api", version: "1.0.0" }
     },
-    apis: [`${import.meta.dirname}/**/*.router.ts`]
+    apis: ["./src/**/*.router.ts"]
 })
 
 const app = express();
