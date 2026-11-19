@@ -1,7 +1,7 @@
 import express from "express";
-import recipeRoutes from "./recipe/recipe.router";
-import { logger } from "./middleware/logger";
-import { errorHandler } from "./recipe/recipe.errors";
+import recipeRoutes from "./recipe/recipe.router.ts";
+import { logger } from "./middleware/logger.ts";
+import { errorHandler } from "./recipe/recipe.errors.ts";
 
 
 

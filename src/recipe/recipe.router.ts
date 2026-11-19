@@ -1,7 +1,7 @@
 import {Router} from "express";
-import { getRecipesHandler, getRecipeHandler, addRecipeHandler, updateRecipeHandler, deleteRecipeHandler } from "./recipe.controller";
-import { apiKeyCheck } from "../middleware/apiKey_check";
-import { handleRecipeErrors } from "./recipe.errors";
+import { getRecipesHandler, getRecipeHandler, addRecipeHandler, updateRecipeHandler, deleteRecipeHandler } from "./recipe.controller.ts";
+import { apiKeyCheck } from "../middleware/apiKey_check.ts";
+import { handleRecipeErrors } from "./recipe.errors.ts";
 
 const router = Router();
 

@@ -1,4 +1,4 @@
-import { RecipeNotFoundError, addRecipeError, deleteRecipeError } from "./recipe.errors";
+import { RecipeNotFoundError, addRecipeError, deleteRecipeError } from "./recipe.errors.ts";
 
 
 interface recipe {

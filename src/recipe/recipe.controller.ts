@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { addRecipe, getAllRecipes, getRecipeById, updateRecipe, deleteRecipe } from "./recipe.service";
+import { addRecipe, getAllRecipes, getRecipeById, updateRecipe, deleteRecipe } from "./recipe.service.ts";
 
 
 
