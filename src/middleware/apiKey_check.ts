@@ -10,10 +10,7 @@ const apiKey = "Bilal123"
 
 export function apiKeyCheck(req: Request, res: Response, next: NextFunction) {
     const apiKey = req.headers["apikey"];
-   
-    console.log("API Key from request header:", apiKey); // log the api key from the request header for debugging purposes
-    console.log("API Key from environment variable:", process.env.API_KEY); // log the api key from the environment variable for debugging purposes
-    
+
     if (!apiKey || apiKey !== process.env.API_KEY) {
         return res.status(401).json({ message: "Fehler: Nicht autorisiert" });
     }

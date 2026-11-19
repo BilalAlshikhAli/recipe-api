@@ -1,0 +1,19 @@
+info:
+  name: deleteRecipe
+  type: http
+  seq: 4
+
+http:
+  method: DELETE
+  url: http://localhost:3000/recipes/10
+  headers:
+    - name: apiKey
+      value: bilal123
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

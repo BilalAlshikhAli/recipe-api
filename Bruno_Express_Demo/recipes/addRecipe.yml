@@ -1,0 +1,32 @@
+info:
+  name: addRecipe
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://localhost:3000/recipes/
+  body:
+    type: json
+    data: |-
+      {
+        
+        
+        "ingredients": [
+          "Spaghetti",
+          "Eier",
+          "Parmesan",
+          "Speck",
+          "Pfeffer"
+        ],
+        "instructions": "Spaghetti kochen, Speck anbraten, Eier mit Parmesan mischen und alles vermengen.",
+        "review": 4.8
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
