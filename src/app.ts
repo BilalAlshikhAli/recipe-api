@@ -5,6 +5,7 @@ import { errorHandler } from "./recipe/recipe.errors.ts";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express"
 import path from "node:path";
+import booksRouter  from "./books/books.router.ts";
 
 const routerDocs = path
   .resolve(process.cwd(), "src/**/*.router.ts")
@@ -46,6 +47,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/recipes", recipeRoutes)
+app.use("/books", booksRouter);
+
 
 app.use((req, res) => {
     res.status(404).json({ error: `Route ${req.originalUrl} not found.`})
