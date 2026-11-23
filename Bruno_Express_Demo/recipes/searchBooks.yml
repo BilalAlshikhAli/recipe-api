@@ -5,7 +5,11 @@ info:
 
 http:
   method: GET
-  url: http://localhost:3000/books/search/Frank
+  url: http://localhost:3000/books/search/?q=frank
+  params:
+    - name: q
+      value: frank
+      type: query
   auth: inherit
 
 settings:

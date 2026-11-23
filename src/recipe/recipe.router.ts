@@ -128,6 +128,12 @@ router.put("/:id", updateRecipeHandler);
  *         description: ID des zu löschenden Rezepts.
  *         schema:
  *           type: integer
+ *       - in: header
+ *         name: apikey
+ *         required: true
+ *         description: API-Key für die Authentifizierung.
+ *         schema:
+ *           type: string  
  *     responses:
  *       204:
  *         description: Rezept wurde erfolgreich gelöscht
