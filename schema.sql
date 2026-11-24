@@ -1,6 +1,6 @@
 -- ____________________________Tebelle Erstellen______________________________________
 
-CREATE TABLE "rezepte"(
+CREATE TABLE IF NOT EXISTS "rezepte" (
     "id" SERIAL NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "minuten" INTEGER NOT NULL,
@@ -8,11 +8,11 @@ CREATE TABLE "rezepte"(
     "anleitung" TEXT NOT NULL,
     "bewertung" DECIMAL(8, 2) NOT NULL
 );
-ALTER TABLE
+ALTER TABLE 
     "rezepte" ADD PRIMARY KEY("id");
 
 
-CREATE TABLE "zutaten"(
+CREATE TABLE IF NOT EXISTS "zutaten"(
     "id" SERIAL NOT NULL,
     "name" VARCHAR(255) NULL
 );
@@ -20,7 +20,7 @@ ALTER TABLE
     "zutaten" ADD PRIMARY KEY("id");
 
 
-CREATE TABLE "rezept_zutaten"(
+CREATE TABLE IF NOT EXISTS "rezept_zutaten"(
     "zutat_id" INTEGER NOT NULL,
     "rezept_id" INTEGER NOT NULL,
     "menge" VARCHAR(100) NOT NULL
@@ -29,6 +29,8 @@ ALTER TABLE
     "rezept_zutaten" ADD PRIMARY KEY("rezept_id", "zutat_id");
 ALTER TABLE
     "rezept_zutaten" ADD CONSTRAINT "rezept_zutaten_rezept_id_foreign" FOREIGN KEY("rezept_id") REFERENCES "rezepte"("id");
+ALTER TABLE
+    "rezept_zutaten" ADD CONSTRAINT "rezept_zutaten_zutat_id_foreign" FOREIGN KEY("zutat_id") REFERENCES "zutaten"("id")
 
 
 
@@ -52,14 +54,14 @@ INSERT INTO zutaten (name) VALUES
 -- 3) Verknüpfen: welche Zutat (mit welcher Menge) gehört in welches Rezept?
 --    Die ids kannst du vorher mit SELECT * FROM rezepte; / SELECT * FROM zutaten; nachschauen.
 INSERT INTO rezept_zutaten (rezept_id, zutat_id, menge) VALUES
-  (1, 1, '200 g'),   -- Carbonara: Spaghetti
-  (1, 2, '2 Stück'), -- Carbonara: Ei
-  (1, 3, '100 g'),   -- Carbonara: Speck
-  (2, 4, '250 g'),   -- Curry: Linsen
-  (2, 5, '400 ml'),  -- Curry: Kokosmilch
-  (2, 6, '1 Stück'), -- Curry: Zwiebel
-  (3, 1, '5 Stück'), -- Curry: Spaghetti
-  (3, 3, '2 Stück'); -- Curry: Speck
+  (7, 19, '200 g'),   -- Carbonara: Spaghetti
+  (7, 20, '2 Stück'), -- Carbonara: Ei
+  (7, 21, '100 g'),   -- Carbonara: Speck
+  (8, 22, '250 g'),   -- Curry: Linsen
+  (8, 23, '400 ml'),  -- Curry: Kokosmilch
+  (8, 24, '1 Stück'), -- Curry: Zwiebel
+  (9, 19, '5 Stück'), -- Curry: Spaghetti
+  (9, 21, '2 Stück'); -- Curry: Speck -- Curry: Speck
 
 
 -- ________________________________________SQL tests___________________________________
