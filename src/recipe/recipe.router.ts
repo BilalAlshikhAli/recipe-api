@@ -155,7 +155,7 @@ router.delete("/:id", apiKeyCheck, deleteRecipeHandler);
  *   schemas:
  *     Recipe:
  *       type: object
- *       required: [id, title, minute, portion, ingredients, instructions, review]
+ *       required: [id, title, minuten, portionen, zutaten, anleitung, bewertung]
  *       properties:
  *         id:
  *           type: integer
@@ -163,40 +163,52 @@ router.delete("/:id", apiKeyCheck, deleteRecipeHandler);
  *         title:
  *           type: string
  *           example: Spaghetti Carbonara
- *         minute:
+ *         minuten:
  *           type: number
  *           description: Zubereitungsdauer in Minuten
  *           example: 30
- *         portion:
+ *         portionen:
  *           type: number
  *           example: 2
- *         ingredients:
+ *         zutaten:
  *           type: array
  *           items:
- *             type: string
- *           example: [Spaghetti, Eier, Parmesan]
- *         instructions:
+ *             type: object
+ *             required: [name, menge]
+ *             properties:
+ *               name:
+ *                 type: string
+ *               menge:
+ *                 type: string
+ *           example: [{name: Spaghetti, menge: "200 g"}]
+ *         anleitung:
  *           type: string
- *         review:
+ *         bewertung:
  *           type: number
  *           example: 4.8
  *     NewRecipe:
  *       type: object
- *       required: [title, minute, portion, ingredients, instructions, review]
+ *       required: [title, minuten, portionen, zutaten, anleitung, bewertung]
  *       properties:
  *         title:
  *           type: string
- *         minute:
+ *         minuten:
  *           type: number
- *         portion:
+ *         portionen:
  *           type: number
- *         ingredients:
+ *         zutaten:
  *           type: array
  *           items:
- *             type: string
- *         instructions:
+ *             type: object
+ *             required: [name, menge]
+ *             properties:
+ *               name:
+ *                 type: string
+ *               menge:
+ *                 type: string
+ *         anleitung:
  *           type: string
- *         review:
+ *         bewertung:
  *           type: number
  *   responses:
  *     RecipeNotFound:

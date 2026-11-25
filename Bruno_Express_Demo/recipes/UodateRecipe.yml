@@ -5,7 +5,7 @@ info:
 
 http:
   method: PUT
-  url: http://localhost:3000/recipes/10
+  url: http://localhost:3000/recipes/5
   headers:
     - name: apikey
       value: Bilal123
@@ -13,7 +13,7 @@ http:
     type: json
     data: |-
       {
-
+        "title": "test_title",
         "ingredients": [
           "Spaghetti",
           "Eier",
