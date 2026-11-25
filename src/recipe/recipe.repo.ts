@@ -6,6 +6,7 @@ export type RezeptZutat = {
   menge: string;
 };
 
+const test = 1
 export type Rezept = {
   id: number;
   title: string;
@@ -27,7 +28,6 @@ const editableColumns = {
   anleitung: "anleitung",
   bewertung: "bewertung",
 };
-
 
 export async function getAllRecipes(): Promise<Rezept[]> {
   const res = await pool.query(
