@@ -50,11 +50,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/recipes", recipeRoutes)
 app.use("/books", booksRouter);
 
-app.use("/date",async (req, res) => {
-  const pool = getPostgresPool();
-  const respons = await pool.query("SELECT NOW()");   
-  console.log("DB sagt:", respons.rows[0]);           
-})
 
 app.use((req, res) => {
     res.status(404).json({ error: `Route ${req.originalUrl} not found.`})
