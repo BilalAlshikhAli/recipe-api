@@ -1,4 +1,4 @@
-import { getPostgresPool } from "../utils/pool.postgres";
+import { getPostgresPool } from "../utils/pool.postgres.ts";
 const pool = getPostgresPool(); 
 
 export type RezeptZutat = {
