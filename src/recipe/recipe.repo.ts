@@ -30,7 +30,8 @@ const editableColumns = {
 };
 
 export async function getAllRecipes(): Promise<Rezept[]> {
-  const res = await pool.query(
+    console.log("start fetch db")
+    const res = await pool.query(
     "SELECT * FROM rezepte ORDER BY id"
   );
   

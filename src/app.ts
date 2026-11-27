@@ -6,6 +6,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express"
 import path from "node:path";
 import booksRouter  from "./books/books.router.ts";
+import reviewsRouter from "./reviews/reviews.router.ts";
 import { getPostgresPool } from "./utils/pool.postgres.ts";
 
 const routerDocs = path
@@ -49,6 +50,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/recipes", recipeRoutes)
 app.use("/books", booksRouter);
+app.use("/books", reviewsRouter);
 
 
 app.use((req, res) => {

@@ -1,63 +1,64 @@
-import { BookNotFoundError } from "./books.errors.ts";
+import { BookDataInvalidError, BookNotFoundError, BookSearchFailedError } from "./books.errors.ts";
+import { createBook as createBookRepo, getAllBooks as getAllBooksRepo, getBookById as getBookByIdRepo, searchBook as searchBookRepo} from "./books.repo.ts";
 
-interface Book {
+export interface Book {
     id: number | string;
     title: string;
     author: string;
+    release_date: string | null; // "YYYY-MM-DD"
+    average_rating: number | null;
 }
+
+export type NewBook = Omit<Book, "id" | "average_rating">;
 
 interface OpenLibrarySearchResponse {
     docs: {
-        key: string;
-        title: string;
         author_name?: string[];
+        title: string;
+        key: string;
     }[]
 }
 
-
-const books = [
-    { id: 1, title: "The Hobbit", author: "J.R.R. Tolkien" },
-    { id: 2, title: "Dune", author: "Frank Herbert" },
-    { id: 3, title: "A Game of Thrones", author: "George R.R. Martin" },
-    { id: 4, title: "Foundation", author: "Isaac Asimov" },
-    { id: 5, title: "The Name of the Wind", author: "Patrick Rothfuss" },
-    { id: 6, title: "Neuromancer", author: "William Gibson" },
-    { id: 7, title: "Die unendliche Geschichte", author: "Michael Ende" },
-    { id: 8, title: "The Left Hand of Darkness", author: "Ursula K. Le Guin" },
-    { id: 9, title: "Mistborn: The Final Empire", author: "Brandon Sanderson" },
-    { id: 10, title: "The Hitchhiker's Guide to the Galaxy", author: "Douglas Adams" },
-];
-
 export async function getAllBooks(): Promise<Book[]> {
-    return books;
+    console.log("getAllBooks_service")
+    return await getAllBooksRepo();
 }
 
 export async function getBookById(id: number): Promise<Book> {
-    const book = books.find((b) => b.id === id);
+    const book = await getBookByIdRepo(id);
     if (!book) throw new BookNotFoundError(id);
     return book;
 }
 
+export async function searchBook(query: string): Promise<Book[]> {
+    return await searchBookRepo(query);
+}
 
-export async function searchBooks(searchTrim: string): Promise<Book[]>  {
+export async function createBook(data: unknown): Promise<Book> {
+    const book = validateNewBook(data);
+    return await createBookRepo(book);
+}
 
-    
-    if (!searchTrim) {
-        throw new Error("Search term is required");
+// Prüft die Daten aus dem Request-Body, bevor sie in der DB landen
+function validateNewBook(data: unknown): NewBook {
+    if (typeof data !== "object" || data === null) throw new BookDataInvalidError("The request body must be a JSON object.");
+    const { title, author, release_date } = data as Record<string, unknown>;
+
+    if (typeof title !== "string" || !title.trim()) throw new BookDataInvalidError("The title is required.");
+    if (typeof author !== "string" || !author.trim()) throw new BookDataInvalidError("The author is required.");
+
+    let releaseDate: string | null = null;
+    if (release_date !== undefined && release_date !== null) {
+        if (!isValidDate(release_date)) throw new BookDataInvalidError("The release_date must be a valid date (YYYY-MM-DD).");
+        releaseDate = release_date;
     }
 
-    const response  = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(searchTrim)}`);
-    
-    if (!response.ok) {
-        throw new Error(`Failed to fetch books: ${response.statusText}`);
-    }
+    return { title: title.trim(), author: author.trim(), release_date: releaseDate };
+}
 
-    const data: OpenLibrarySearchResponse = await response.json(); 
-
-    return data.docs.map((book) => ({
-        id: book.key,
-        title: book.title,
-        author: book.author_name ? book.author_name.join(", ") : "Unknown"
-    })); 
-    
+function isValidDate(value: unknown): value is string {
+    if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    // "YYYY-MM-DD" wird als UTC gelesen; ungültige Tage wie 2023-02-30 rollen weiter und passen dann nicht mehr
+    const date = new Date(value);
+    return !isNaN(date.getTime()) && date.toISOString().startsWith(value);
 }

@@ -9,10 +9,46 @@ export class BookNotFoundError extends Error {
     }
 }
 
+export class BookSearchQueryMissingError extends Error {
+    constructor() {
+        super("The search query is missing.")
+    }
+}
+
+export class BookSearchFailedError extends Error {
+    constructor(query: string) {
+        super(`The book search for "${query}" failed.`)
+    }
+}
+
+export class BookDataInvalidError extends Error {
+    constructor(reason: string) {
+        super(`Invalid book data. ${reason}`)
+    }
+}
+
+export class BookAlreadyExistsError extends Error {
+    constructor(title: string, author: string) {
+        super(`Book already exists. Title: ${title}, Author: ${author}`)
+    }
+}
+
 export function handleBookErrors(err: Error, req: Request, res: Response, next: NextFunction) {
     console.error(err);
     if (err instanceof BookNotFoundError) {
         return res.status(404).json({ error: err.message })
+    }
+    if (err instanceof BookSearchQueryMissingError) {
+        return res.status(400).json({ error: err.message })
+    }
+    if (err instanceof BookSearchFailedError) {
+        return res.status(502).json({ error: err.message })
+    }
+    if (err instanceof BookDataInvalidError) {
+        return res.status(400).json({ error: err.message })
+    }
+    if (err instanceof BookAlreadyExistsError) {
+        return res.status(409).json({ error: err.message })
     }
 
     next(err);

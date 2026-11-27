@@ -1,7 +1,6 @@
 import { Router } from "express"
-import { getBookHandler, getBooksHandler } from "./books.controller.ts";
+import { createBookHandler, getBookHandler, getBooksHandler, searchBooksHandler } from "./books.controller.ts";
 import { handleBookErrors } from "./books.errors.ts";
-import { searchBooksHandler } from "./books.controller.ts";
 
 const router = Router();
 
@@ -23,8 +22,72 @@ const router = Router();
 router.get("/", getBooksHandler);
 
 
+/**
+ * @openapi
+ * /books:
+ *   post:
+ *     summary: Ein neues Buch anlegen
+ *     parameters:
+ *       - in: query
+ *         name: apiKey
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - author
+ *             properties:
+ *               title:
+ *                 type: string
+ *               author:
+ *                 type: string
+ *               release_date:
+ *                 type: string
+ *                 format: date
+ *                 example: "1937-09-21"
+ *     responses:
+ *       201:
+ *         description: Das angelegte Buch
+ *       400:
+ *         description: Titel oder Autor fehlt, oder release_date ist kein gültiges Datum (YYYY-MM-DD).
+ *       409:
+ *         description: Ein Buch mit diesem Titel und Autor gibt es schon (Groß-/Kleinschreibung egal).
+ */
+router.post("/", createBookHandler);
 
+
+/**
+ * @openapi
+ * /books/search:
+ *   get:
+ *     summary: Bücher über die OpenLibrary-API suchen
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: apiKey
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste der gefundenen Bücher
+ *       400:
+ *         description: Der Suchbegriff fehlt.
+ *       502:
+ *         description: Die OpenLibrary-API ist nicht erreichbar oder hat einen Fehler zurückgegeben.
+ */
 router.get("/search", searchBooksHandler);
+
 
 /**
  * @openapi
